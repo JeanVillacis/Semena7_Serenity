@@ -32,10 +32,10 @@ public class PolizaRegistroStepDefinitions {
             
             // Use FillReactInput to bypass OS native limits and ensure React Hook Form correctly processes value
             WaitUntil.the(PolizaForm.ASEGURADO_SELECT, isClickable()).forNoMoreThan(10).seconds(),
-            screenplay.actions.FillReactInput.withValue("1", PolizaForm.ASEGURADO_SELECT),
+            screenplay.actions.FillReactInput.withFirstOption(PolizaForm.ASEGURADO_SELECT),
             
             WaitUntil.the(PolizaForm.VEHICULO_SELECT, isClickable()).forNoMoreThan(10).seconds(),
-            screenplay.actions.FillReactInput.withValue("1", PolizaForm.VEHICULO_SELECT),
+            screenplay.actions.FillReactInput.withFirstOption(PolizaForm.VEHICULO_SELECT),
             
             Enter.theValue(valor).into(PolizaForm.VALOR_ASEGURADO_FIELD),
             
@@ -60,9 +60,9 @@ public class PolizaRegistroStepDefinitions {
             
             // Fill required dropdowns
             WaitUntil.the(PolizaForm.ASEGURADO_SELECT, isClickable()).forNoMoreThan(10).seconds(),
-            screenplay.actions.FillReactInput.withValue("1", PolizaForm.ASEGURADO_SELECT),
+            screenplay.actions.FillReactInput.withFirstOption(PolizaForm.ASEGURADO_SELECT),
             WaitUntil.the(PolizaForm.VEHICULO_SELECT, isClickable()).forNoMoreThan(10).seconds(),
-            screenplay.actions.FillReactInput.withValue("1", PolizaForm.VEHICULO_SELECT),
+            screenplay.actions.FillReactInput.withFirstOption(PolizaForm.VEHICULO_SELECT),
             
             Enter.theValue(valor).into(PolizaForm.VALOR_ASEGURADO_FIELD),
             
@@ -85,9 +85,9 @@ public class PolizaRegistroStepDefinitions {
             
             // Fill required dropdowns
             WaitUntil.the(PolizaForm.ASEGURADO_SELECT, isClickable()).forNoMoreThan(10).seconds(),
-            screenplay.actions.FillReactInput.withValue("1", PolizaForm.ASEGURADO_SELECT),
+            screenplay.actions.FillReactInput.withFirstOption(PolizaForm.ASEGURADO_SELECT),
             WaitUntil.the(PolizaForm.VEHICULO_SELECT, isClickable()).forNoMoreThan(10).seconds(),
-            screenplay.actions.FillReactInput.withValue("1", PolizaForm.VEHICULO_SELECT),
+            screenplay.actions.FillReactInput.withFirstOption(PolizaForm.VEHICULO_SELECT),
             
             // Fill invalid value
             Enter.theValue(valorInvalido).into(PolizaForm.VALOR_ASEGURADO_FIELD),

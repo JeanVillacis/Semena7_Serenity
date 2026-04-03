@@ -11,10 +11,10 @@ public class PolizaForm {
         .locatedBy("//input[@placeholder='POL-2026-001']");
 
     public static final Target ASEGURADO_SELECT = Target.the("selector de Asegurado")
-        .locatedBy("(//select[contains(@class,'form-input')])[1]");
+        .locatedBy("//select[@name='aseguradoId']");
 
     public static final Target VEHICULO_SELECT = Target.the("selector de Vehículo")
-        .locatedBy("(//select[contains(@class,'form-input')])[2]");
+        .locatedBy("//select[@name='vehiculoId']");
 
     public static final Target VALOR_ASEGURADO_FIELD = Target.the("campo Valor Asegurado")
         .locatedBy("//input[@placeholder='25000.00']");

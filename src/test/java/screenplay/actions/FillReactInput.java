@@ -22,14 +22,24 @@ public class FillReactInput implements Interaction {
         return instrumented(FillReactInput.class, value, target);
     }
 
+    public static FillReactInput withFirstOption(Target target) {
+        return instrumented(FillReactInput.class, "FIRST_OPTION", target);
+    }
+
     @Override
     public <T extends Actor> void performAs(T actor) {
         WebElement element = target.resolveFor(actor);
+        String actualValue = value;
+        
+        if ("FIRST_OPTION".equals(value) && "select".equalsIgnoreCase(element.getTagName())) {
+            actualValue = element.findElements(org.openqa.selenium.By.tagName("option")).get(1).getAttribute("value");
+        }
+        
         JavascriptExecutor js = (JavascriptExecutor) Serenity.getDriver();
         js.executeScript("let setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set; " +
             "if(arguments[0].tagName === 'SELECT') setter = Object.getOwnPropertyDescriptor(window.HTMLSelectElement.prototype, 'value').set; " +
             "setter.call(arguments[0], arguments[1]); " +
             "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));" +
-            "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));", element, value);
+            "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));", element, actualValue);
     }
 }
