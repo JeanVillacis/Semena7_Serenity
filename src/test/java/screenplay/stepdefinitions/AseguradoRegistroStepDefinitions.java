@@ -99,9 +99,14 @@ public class AseguradoRegistroStepDefinitions {
     @Then("el sistema notifica que el formato de correo electrónico no es válido")
     public void notificaCorreoInvalido() {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.should(seeThat(
-            ElementVisibility.of(CommonElements.VALIDATION_ERROR), is(true)
-        ));
+        boolean hasReactError = AseguradoForm.CORREO_FIELD.resolveFor(actor)
+                                .getAttribute("class").contains("error");
+        String validationMessage = AseguradoForm.CORREO_FIELD.resolveFor(actor)
+                                                .getAttribute("validationMessage");
+        boolean hasNativeError = validationMessage != null && !validationMessage.isEmpty();
+        
+        actor.should(seeThat("Tiene error de validacion en correo", 
+            a -> hasReactError || hasNativeError, is(true)));
     }
 
     @And("no se crea un nuevo registro")

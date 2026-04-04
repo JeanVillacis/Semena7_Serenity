@@ -126,6 +126,9 @@ public class PolizaRegistroStepDefinitions {
     @Then("el sistema notifica que el rango de fechas no es válido")
     public void notificaFechasInvalidas() {
         Actor actor = OnStage.theActorInTheSpotlight();
+        actor.attemptsTo(
+            WaitUntil.the(CommonElements.VALIDATION_ERROR, isVisible()).forNoMoreThan(5).seconds()
+        );
         actor.should(seeThat(
             ElementVisibility.of(CommonElements.VALIDATION_ERROR), is(true)
         ));

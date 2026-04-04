@@ -18,7 +18,7 @@ public class AlertMessage implements Question<String> {
     }
 
     public static AlertMessage ofError() {
-        return new AlertMessage(CommonElements.ERROR_ALERT);
+        return new AlertMessage(CommonElements.TOAST_ERROR);
     }
 
     public static AlertMessage of(Target target) {

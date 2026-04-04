@@ -28,4 +28,14 @@ public class LoginStepDefinitions {
     public void accedePolizas() {
         OnStage.theActorInTheSpotlight().attemptsTo(NavigateTo.polizas());
     }
+
+    @Given("accede al módulo de reclamos")
+    public void accedeReclamos() {
+        OnStage.theActorInTheSpotlight().attemptsTo(NavigateTo.reclamos());
+    }
+
+    @Given("accede al módulo de nuevo reclamo")
+    public void accedeNuevoReclamo() {
+        OnStage.theActorInTheSpotlight().attemptsTo(NavigateTo.nuevoReclamo());
+    }
 }
