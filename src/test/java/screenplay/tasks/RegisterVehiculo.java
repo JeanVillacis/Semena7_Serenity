@@ -30,8 +30,9 @@ public class RegisterVehiculo implements Task {
     @Step("{0} registra un vehículo con placa #data.placa")
     public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(
+            WaitUntil.the(VehiculoPage.NEW_BUTTON, isClickable()).forNoMoreThan(10).seconds(),
             Click.on(VehiculoPage.NEW_BUTTON),
-            WaitUntil.the(VehiculoForm.MODAL_TITLE, isVisible()).forNoMoreThan(10).seconds()
+            WaitUntil.the(VehiculoForm.MODAL_TITLE, isVisible()).forNoMoreThan(15).seconds()
         );
 
         if (!data.getMarca().isEmpty()) {
