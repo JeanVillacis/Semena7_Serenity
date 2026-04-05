@@ -32,7 +32,7 @@ src/test/
 │   ├── ui/                   # Page Objects (locadores XPath/CSS)
 │   └── model/                # Clases de datos (AseguradoData, VehiculoData, PolizaData)
 └── resources/
-    └── features/             # Escenarios BDD en español (HU-001 a HU-006)
+    └── features/             # Escenarios BDD en español (HU-001 a HU-013)
 ```
 
 ---
@@ -47,6 +47,8 @@ src/test/
 | HU-004 | Consulta de vehículos | CP001 al CP003 |
 | HU-005 | Registro de póliza | CP001, CP003, CP004, CP005 |
 | HU-006 | Consulta de pólizas | CP001 al CP003 |
+| HU-007 | Registro de reclamos de siniestro | CP001 al CP008 |
+| HU-013 | Consulta de estado de reclamo por asegurado | CP001 al CP003 |
 
 ---
 
