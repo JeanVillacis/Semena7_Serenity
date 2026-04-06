@@ -14,7 +14,7 @@ Proyecto de pruebas automatizadas end-to-end para el sistema de gestión de segu
 | Selenium | 4.21.0 |
 | WebDriverManager | 5.9.1 |
 | JUnit | 4.13.2 |
-| Gradle | 8+ |
+| Gradle | 9.2.1 |
 
 ---
 
@@ -23,13 +23,14 @@ Proyecto de pruebas automatizadas end-to-end para el sistema de gestión de segu
 ```
 src/test/
 ├── java/screenplay/
+│   ├── config/               # Configuración centralizada (TestConfig)
 │   ├── runner/               # TestRunner (CucumberWithSerenity)
 │   ├── stepdefinitions/      # Definiciones de pasos por HU
 │   ├── tasks/                # Tareas del patrón Screenplay
 │   ├── questions/            # Preguntas / aserciones
 │   ├── actions/              # Interacciones personalizadas (FillReactInput)
 │   ├── interactions/         # Esperas personalizadas
-│   ├── ui/                   # Page Objects (locadores XPath/CSS)
+│   ├── ui/                   # Page Objects (locadores XPath)
 │   └── model/                # Clases de datos (AseguradoData, VehiculoData, PolizaData)
 └── resources/
     └── features/             # Escenarios BDD en español (HU-001 a HU-013)
@@ -58,16 +59,47 @@ src/test/
 2. **Google Chrome** instalado (WebDriverManager descarga el driver automáticamente)
 3. **Sistema InsurTech corriendo** en `http://localhost:4000`
 
-> El sistema completo se levanta con Docker Compose desde el repositorio del backend:
+> El sistema se levanta con Docker Compose desde el repositorio del backend:
 > ```bash
 > docker-compose down -v   # limpia volúmenes (BD limpia)
 > docker-compose up -d     # levanta todos los servicios
 > ```
-> Espera ~30 segundos a que los microservicios Spring Boot estén listos.
+> Espera ~30 segundos a que los servicios estén listos antes de ejecutar las pruebas.
+
+---
+
+## Configuración de variables de entorno
+
+Las credenciales y la URL base se leen desde variables de entorno para evitar datos sensibles en el código fuente.
+
+Copia el archivo de ejemplo y completa los valores:
+
+```bash
+cp .env.example .env
+```
+
+`.env.example`:
+```env
+WEBDRIVER_BASE_URL=http://localhost:4000
+GESTOR_USERNAME=
+GESTOR_PASSWORD=
+```
+
+> `.env` está en `.gitignore` y nunca debe subirse al repositorio.
+
+También puedes pasar los valores directamente por línea de comandos:
+
+```bash
+./gradlew test -Dgestor.username=gestor01 -Dgestor.password=gestor123
+```
+
+El orden de precedencia es: **variable de entorno → `-D` system property → valor por defecto**.
 
 ---
 
 ## Ejecutar las pruebas
+
+> **Importante:** ejecuta siempre con la base de datos limpia (`docker-compose down -v && docker-compose up -d`). Los tests son secuenciales y dependen de datos creados por tests anteriores.
 
 ```bash
 # Ejecutar todos los tests y generar reporte
@@ -79,8 +111,6 @@ src/test/
 # Ejecutar un caso de prueba específico
 ./gradlew clean test aggregate -Dcucumber.filter.tags="@CP001-HU-003"
 ```
-
-> **Importante:** Ejecutar siempre con la base de datos limpia (`docker-compose down -v && docker-compose up -d`). Los tests son secuenciales y dependen de datos previos (ej: HU-003 CP003 requiere que CP001 haya registrado la placa).
 
 ---
 
@@ -94,21 +124,19 @@ target/site/serenity/index.html
 
 El reporte incluye resultados por HU, capturas de pantalla de cada paso y detalle de errores.
 
+> Para un análisis detallado de la última ejecución — métricas globales, resultados por HU, observaciones técnicas y recomendaciones — ver [INFORME.md](INFORME.md).
+
 ---
 
-## Configuración
+## Configuración general
 
-| Archivo | Descripción |
+El archivo `serenity.properties` controla el comportamiento del framework:
+
+| Propiedad | Descripción |
 |---|---|
-| `serenity.properties` | URL base, driver, modo headless, screenshots |
-| `src/test/resources/serenity.conf` | Nombre del proyecto, directorio de features |
-
-Para ejecutar en modo headless (sin abrir Chrome):
-
-```properties
-# serenity.properties
-headless.mode=true
-```
+| `webdriver.base.url` | URL base del sistema bajo prueba |
+| `headless.mode` | `true` para ejecutar sin abrir Chrome |
+| `serenity.take.screenshots` | Frecuencia de capturas de pantalla |
 
 ---
 
@@ -120,4 +148,4 @@ Las pruebas siguen el patrón **Screenplay** con tres elementos clave:
 - **Questions** — verificaciones (`PageContent`, `ElementVisibility`, `AlertMessage`)
 - **Page Objects** — locadores centralizados (`AseguradoPage`, `VehiculoForm`, `PolizaPage`)
 
-La interacción `FillReactInput` resuelve la compatibilidad con formularios **React Hook Form**, disparando los eventos nativos que React necesita para validar campos (`valueAsNumber`, `setValueAs`).
+La interacción `FillReactInput` resuelve la compatibilidad con formularios **React Hook Form**, disparando los eventos nativos que React necesita para registrar cambios en sus inputs controlados.
