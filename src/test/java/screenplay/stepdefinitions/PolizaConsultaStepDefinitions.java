@@ -17,7 +17,6 @@ public class PolizaConsultaStepDefinitions {
 
     @Given("existen pólizas registradas en el sistema")
     public void existenPolizasRegistradas() {
-        // Pre-condition: polizas created by 05_poliza_registro feature
     }
 
     @When("consulta las pólizas registradas")

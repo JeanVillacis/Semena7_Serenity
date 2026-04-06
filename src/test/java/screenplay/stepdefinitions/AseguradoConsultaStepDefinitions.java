@@ -20,7 +20,6 @@ public class AseguradoConsultaStepDefinitions {
 
     @Given("existen asegurados registrados en el sistema")
     public void existenAseguradosRegistrados() {
-        // Pre-condition: the Docker system already has asegurados loaded
     }
 
     @When("consulta el listado de asegurados")

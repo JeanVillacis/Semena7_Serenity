@@ -26,24 +26,15 @@ public class PolizaRegistroStepDefinitions {
         actor.attemptsTo(
             Click.on(PolizaPage.NEW_BUTTON),
             WaitUntil.the(PolizaForm.MODAL_TITLE, isVisible()).forNoMoreThan(10).seconds(),
-            // Wait for fields to be clickable
             WaitUntil.the(PolizaForm.NUMERO_POLIZA_FIELD, isClickable()).forNoMoreThan(5).seconds(),
             Enter.theValue(numero).into(PolizaForm.NUMERO_POLIZA_FIELD),
-            
-            // Use FillReactInput to bypass OS native limits and ensure React Hook Form correctly processes value
             WaitUntil.the(PolizaForm.ASEGURADO_SELECT, isClickable()).forNoMoreThan(10).seconds(),
             screenplay.actions.FillReactInput.withFirstOption(PolizaForm.ASEGURADO_SELECT),
-            
             WaitUntil.the(PolizaForm.VEHICULO_SELECT, isClickable()).forNoMoreThan(10).seconds(),
             screenplay.actions.FillReactInput.withFirstOption(PolizaForm.VEHICULO_SELECT),
-            
             Enter.theValue(valor).into(PolizaForm.VALOR_ASEGURADO_FIELD),
-            
-            // Format dates from YYYY-MM-DD to ensure browser independent submission
             screenplay.actions.FillReactInput.withValue(inicio, PolizaForm.VIGENCIA_INICIO_FIELD),
             screenplay.actions.FillReactInput.withValue(fin, PolizaForm.VIGENCIA_FIN_FIELD),
-            
-            // Allow React Hook form to catch up
             WaitUntil.the(PolizaForm.SUBMIT_BUTTON, isClickable()).forNoMoreThan(5).seconds(),
             Click.on(PolizaForm.SUBMIT_BUTTON)
         );
@@ -57,18 +48,13 @@ public class PolizaRegistroStepDefinitions {
             WaitUntil.the(PolizaForm.MODAL_TITLE, isVisible()).forNoMoreThan(10).seconds(),
             WaitUntil.the(PolizaForm.NUMERO_POLIZA_FIELD, isClickable()).forNoMoreThan(5).seconds(),
             Enter.theValue(numero).into(PolizaForm.NUMERO_POLIZA_FIELD),
-            
-            // Fill required dropdowns
             WaitUntil.the(PolizaForm.ASEGURADO_SELECT, isClickable()).forNoMoreThan(10).seconds(),
             screenplay.actions.FillReactInput.withFirstOption(PolizaForm.ASEGURADO_SELECT),
             WaitUntil.the(PolizaForm.VEHICULO_SELECT, isClickable()).forNoMoreThan(10).seconds(),
             screenplay.actions.FillReactInput.withFirstOption(PolizaForm.VEHICULO_SELECT),
-            
             Enter.theValue(valor).into(PolizaForm.VALOR_ASEGURADO_FIELD),
-            
             screenplay.actions.FillReactInput.withValue(inicio, PolizaForm.VIGENCIA_INICIO_FIELD),
             screenplay.actions.FillReactInput.withValue(fin, PolizaForm.VIGENCIA_FIN_FIELD),
-            
             WaitUntil.the(PolizaForm.SUBMIT_BUTTON, isClickable()).forNoMoreThan(5).seconds(),
             Click.on(PolizaForm.SUBMIT_BUTTON)
         );
@@ -82,20 +68,13 @@ public class PolizaRegistroStepDefinitions {
             WaitUntil.the(PolizaForm.MODAL_TITLE, isVisible()).forNoMoreThan(10).seconds(),
             WaitUntil.the(PolizaForm.NUMERO_POLIZA_FIELD, isClickable()).forNoMoreThan(5).seconds(),
             Enter.theValue(numero).into(PolizaForm.NUMERO_POLIZA_FIELD),
-            
-            // Fill required dropdowns
             WaitUntil.the(PolizaForm.ASEGURADO_SELECT, isClickable()).forNoMoreThan(10).seconds(),
             screenplay.actions.FillReactInput.withFirstOption(PolizaForm.ASEGURADO_SELECT),
             WaitUntil.the(PolizaForm.VEHICULO_SELECT, isClickable()).forNoMoreThan(10).seconds(),
             screenplay.actions.FillReactInput.withFirstOption(PolizaForm.VEHICULO_SELECT),
-            
-            // Fill invalid value
             Enter.theValue(valorInvalido).into(PolizaForm.VALOR_ASEGURADO_FIELD),
-            
-            // Fill required dates
             screenplay.actions.FillReactInput.withValue("2026-01-01", PolizaForm.VIGENCIA_INICIO_FIELD),
             screenplay.actions.FillReactInput.withValue("2027-12-31", PolizaForm.VIGENCIA_FIN_FIELD),
-            
             WaitUntil.the(PolizaForm.SUBMIT_BUTTON, isClickable()).forNoMoreThan(5).seconds(),
             Click.on(PolizaForm.SUBMIT_BUTTON)
         );
@@ -150,7 +129,6 @@ public class PolizaRegistroStepDefinitions {
                 ElementVisibility.of(PolizaForm.MODAL_TITLE), is(true)
             ));
         } catch (Throwable e) {
-            // Modal may have been closed if backend processed the request
         }
     }
 }

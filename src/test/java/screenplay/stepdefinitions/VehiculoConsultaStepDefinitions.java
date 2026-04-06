@@ -19,7 +19,6 @@ public class VehiculoConsultaStepDefinitions {
 
     @Given("existen vehículos registrados en el sistema")
     public void existenVehiculosRegistrados() {
-        // Pre-condition: vehicles created by 03_vehiculo_registro feature
     }
 
     @When("consulta el listado de vehículos")

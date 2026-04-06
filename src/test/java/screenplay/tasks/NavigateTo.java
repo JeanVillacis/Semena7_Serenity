@@ -5,6 +5,7 @@ import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.actions.Click;
 import net.serenitybdd.screenplay.actions.Open;
 import net.serenitybdd.screenplay.waits.WaitUntil;
+import screenplay.config.TestConfig;
 import screenplay.ui.AseguradoPage;
 import screenplay.ui.PolizaPage;
 import screenplay.ui.ReclamoForm;
@@ -47,7 +48,7 @@ public class NavigateTo {
 
     public static Performable nuevoReclamo() {
         return Task.where("{0} navega al formulario de Nuevo Reclamo",
-            Open.url("http://localhost:4000/nuevo-reclamo"),
+            Open.url(TestConfig.nuevoReclamoUrl()),
             WaitUntil.the(ReclamoForm.POLIZA_SELECT, isClickable()).forNoMoreThan(15).seconds()
         );
     }

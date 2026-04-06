@@ -44,3 +44,6 @@ Desktop.ini
 *.temp
 *.swp
 *.swo
+
+serenity.local.properties
+.env

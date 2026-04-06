@@ -7,6 +7,7 @@ import net.serenitybdd.screenplay.actions.Enter;
 import net.serenitybdd.screenplay.actions.Open;
 import net.serenitybdd.screenplay.waits.WaitUntil;
 import net.serenitybdd.annotations.Step;
+import screenplay.config.TestConfig;
 import screenplay.ui.LoginPage;
 import screenplay.ui.SidebarMenu;
 
@@ -30,7 +31,7 @@ public class Login implements Task {
     @Step("{0} inicia sesión con usuario #username")
     public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(
-            Open.url("http://localhost:4000/login"),
+            Open.url(TestConfig.loginUrl()),
             WaitUntil.the(LoginPage.USERNAME_FIELD, isVisible()).forNoMoreThan(15).seconds(),
             Enter.theValue(username).into(LoginPage.USERNAME_FIELD),
             Enter.theValue(password).into(LoginPage.PASSWORD_FIELD),
