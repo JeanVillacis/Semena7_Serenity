@@ -43,6 +43,9 @@ public class PolizaConsultaStepDefinitions {
     @Then("el sistema muestra el detalle de la póliza {string}")
     public void sistemaMuestraDetallePoliza(String numeroPoliza) {
         Actor actor = OnStage.theActorInTheSpotlight();
+        actor.attemptsTo(
+            WaitUntil.the(PolizaPage.rowWithNumero(numeroPoliza), isVisible()).forNoMoreThan(10).seconds()
+        );
         actor.should(seeThat(PageContent.containsText(numeroPoliza), is(true)));
     }
 

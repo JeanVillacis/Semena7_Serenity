@@ -4,6 +4,7 @@ import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
 import net.serenitybdd.screenplay.targets.Target;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
@@ -26,13 +27,24 @@ public class FillReactInput implements Interaction {
         return instrumented(FillReactInput.class, "FIRST_OPTION", target);
     }
 
+    public static FillReactInput withOptionContaining(String text, Target target) {
+        return instrumented(FillReactInput.class, "OPTION_TEXT:" + text, target);
+    }
+
     @Override
     public <T extends Actor> void performAs(T actor) {
         WebElement element = target.resolveFor(actor);
         String actualValue = value;
         
         if ("FIRST_OPTION".equals(value) && "select".equalsIgnoreCase(element.getTagName())) {
-            actualValue = element.findElements(org.openqa.selenium.By.tagName("option")).get(1).getAttribute("value");
+            actualValue = element.findElements(By.tagName("option")).get(1).getAttribute("value");
+        } else if (value.startsWith("OPTION_TEXT:") && "select".equalsIgnoreCase(element.getTagName())) {
+            String text = value.substring("OPTION_TEXT:".length());
+            actualValue = element.findElements(By.tagName("option")).stream()
+                .filter(o -> o.getText().contains(text))
+                .map(o -> o.getAttribute("value"))
+                .findFirst()
+                .orElse("");
         }
         
         JavascriptExecutor js = (JavascriptExecutor) Serenity.getDriver();

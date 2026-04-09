@@ -2,11 +2,14 @@ package screenplay.stepdefinitions;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actions.Click;
 import net.serenitybdd.screenplay.actions.Enter;
 import net.serenitybdd.screenplay.waits.WaitUntil;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import screenplay.questions.ElementVisibility;
 import screenplay.ui.CommonElements;
 import screenplay.ui.ReclamoForm;
@@ -26,7 +29,7 @@ public class ReclamoRegistroStepDefinitions {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
             WaitUntil.the(ReclamoForm.POLIZA_SELECT, isClickable()).forNoMoreThan(15).seconds(),
-            screenplay.actions.FillReactInput.withFirstOption(ReclamoForm.POLIZA_SELECT),
+            screenplay.actions.FillReactInput.withOptionContaining(poliza, ReclamoForm.POLIZA_SELECT),
             screenplay.actions.FillReactInput.withValue(fecha, ReclamoForm.FECHA_INCIDENTE_FIELD),
             Enter.theValue(descripcion).into(ReclamoForm.DESCRIPCION_FIELD),
             Enter.theValue(monto).into(ReclamoForm.MONTO_ESTIMADO_FIELD),
@@ -44,7 +47,7 @@ public class ReclamoRegistroStepDefinitions {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
             WaitUntil.the(ReclamoForm.POLIZA_SELECT, isClickable()).forNoMoreThan(15).seconds(),
-            screenplay.actions.FillReactInput.withFirstOption(ReclamoForm.POLIZA_SELECT),
+            screenplay.actions.FillReactInput.withOptionContaining(poliza, ReclamoForm.POLIZA_SELECT),
             screenplay.actions.FillReactInput.withValue("2026-03-15", ReclamoForm.FECHA_INCIDENTE_FIELD)
         );
 
@@ -97,10 +100,11 @@ public class ReclamoRegistroStepDefinitions {
     public void adjuntaFotografiaValida(String archivo) {
         String path = Paths.get("src/test/resources/data/" + archivo).toAbsolutePath().toString();
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(
-            net.serenitybdd.screenplay.actions.Upload.theFile(Paths.get(path))
-                                                     .to(ReclamoForm.FILE_UPLOAD_INPUT)
-        );
+        WebElement fileInput = ReclamoForm.FILE_UPLOAD_INPUT.resolveFor(actor);
+        JavascriptExecutor js = (JavascriptExecutor) Serenity.getDriver();
+        js.executeScript("arguments[0].style.display = 'block';", fileInput);
+        fileInput.sendKeys(path);
+        js.executeScript("arguments[0].dispatchEvent(new Event('change', { bubbles: true }));", fileInput);
     }
 
     @When("adjunta el archivo en formato no permitido {string}")
